@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#070d1a"><title>Admin · Enquiries | NEXORA Technology</title>
+<style>
+:root{--bg:#070d1a;--panel:#101b2d;--panel2:#14243a;--line:#2a3b55;--text:#f4f8ff;--muted:#b1bfd4;--blue:#39bdf8;--gold:#ffd64d;--green:#1ab88b;--purple:#a77bfa;--orange:#ff8a32;--red:#ff6b6b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 Inter,Arial,sans-serif;min-height:100vh}
+a{color:var(--blue)}button,input,select{font:inherit}
+.wrap{width:min(1240px,calc(100% - 32px));margin:auto}
+header{background:#0b1729;border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.3px}
+.logo{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#0876cf,#12376e);font-size:1.3rem}
+.brand small{display:block;color:var(--gold);font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-radius:999px;background:var(--gold);color:#111b2b;font-weight:800;border:0;cursor:pointer;text-decoration:none}
+.btn:disabled{opacity:.6;cursor:wait}
+.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.ghost:hover{border-color:var(--blue)}
+.who{color:var(--muted);font-size:.88rem;display:flex;align-items:center;gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:30px}
+.auth{max-width:420px;margin:9vh auto}
+.auth h1{margin:0 0 6px;font-size:1.6rem}.auth p{color:var(--muted);margin:0 0 20px}
+label{display:block;font-weight:700;font-size:.85rem;margin:14px 0 6px;color:#d4dfef}
+input,select{width:100%;padding:11px 13px;border-radius:12px;border:1px solid var(--line);background:#0b1626;color:var(--text)}
+input:focus,select:focus{outline:2px solid var(--blue);outline-offset:1px}
+.auth .btn{width:100%;margin-top:20px}
+.linkbtn{background:none;border:0;color:var(--blue);cursor:pointer;padding:0;margin-top:14px;font-size:.88rem}
+.msg{margin-top:14px;padding:10px 13px;border-radius:12px;font-size:.9rem;display:none}
+.msg.show{display:block}.msg.err{background:#ff6b6b1a;border:1px solid #ff6b6b66;color:#ffc2c2}.msg.ok{background:#1ab88b1a;border:1px solid #1ab88b66;color:#a6f0d8}
+main{padding:28px 0 60px}
+.head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.head h1{margin:0;font-size:1.8rem}.eyebrow{font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;font-size:.72rem}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.stat span{color:var(--muted);font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+.stat strong{display:block;font-size:1.8rem;line-height:1.2;margin-top:4px}
+.tools{display:grid;grid-template-columns:1fr 200px 170px;gap:10px;margin-bottom:14px}
+.tablewrap{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);background:var(--panel2);position:sticky;top:0}
+tr:last-child td{border-bottom:0}tbody tr:hover{background:#ffffff05}
+td .sub{color:var(--muted);font-size:.85rem}
+td.msgcell{max-width:320px;white-space:pre-wrap;word-break:break-word;color:#d4dfef}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:800;background:#39bdf81f;color:var(--blue)}
+.status{width:auto;padding:6px 10px;border-radius:999px;font-size:.82rem;font-weight:700}
+.status[data-v=new]{border-color:var(--gold);color:var(--gold)}.status[data-v=contacted]{border-color:var(--blue);color:var(--blue)}.status[data-v=enrolled]{border-color:var(--green);color:var(--green)}.status[data-v=closed]{color:var(--muted)}
+.del{background:none;border:1px solid transparent;color:var(--muted);border-radius:8px;cursor:pointer;padding:5px 8px}.del:hover{color:var(--red);border-color:#ff6b6b66}
+.empty{padding:50px 20px;text-align:center;color:var(--muted)}
+[hidden]{display:none!important}
+@media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}.tools{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header><div class="wrap bar"><div class="brand"><div class="logo">N</div><div>NEXORA Technology<small>Admin dashboard</small></div></div><div class="who" id="who" hidden><span id="whoEmail"></span><button class="btn ghost" id="logoutBtn" type="button">Log out</button></div></div></header>
+
+<section id="authView" class="wrap" hidden>
+  <form class="card auth" id="loginForm">
+    <h1>Admin login</h1><p>Sign in to view all student enquiries.</p>
+    <label for="loginEmail">Email</label><input id="loginEmail" type="email" autocomplete="username" required>
+    <label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required>
+    <button class="btn" type="submit">Log in</button>
+    <button class="linkbtn" type="button" id="forgotBtn">Forgot password?</button>
+    <div class="msg" id="loginMsg" role="status"></div>
+  </form>
+  <form class="card auth" id="passwordForm" hidden>
+    <h1 id="passwordTitle">Set your password</h1><p id="passwordHint">Choose a password for your admin account.</p>
+    <label for="newPassword">New password</label><input id="newPassword" type="password" autocomplete="new-password" minlength="8" required>
+    <button class="btn" type="submit">Save password</button>
+    <div class="msg" id="passwordMsg" role="status"></div>
+  </form>
+</section>
+
+<main id="dashView" class="wrap" hidden>
+  <div class="head"><div><span class="eyebrow">Admissions</span><h1>All enquiries</h1></div><div style="display:flex;gap:10px"><button class="btn ghost" id="refreshBtn" type="button">↻ Refresh</button><button class="btn" id="exportBtn" type="button">Export CSV</button></div></div>
+  <div class="stats">
+    <div class="stat"><span>Total</span><strong id="sTotal">0</strong></div>
+    <div class="stat"><span>New</span><strong id="sNew" style="color:var(--gold)">0</strong></div>
+    <div class="stat"><span>Contacted</span><strong id="sContacted" style="color:var(--blue)">0</strong></div>
+    <div class="stat"><span>Enrolled</span><strong id="sEnrolled" style="color:var(--green)">0</strong></div>
+    <div class="stat"><span>Last 7 days</span><strong id="sWeek">0</strong></div>
+  </div>
+  <div class="tools">
+    <input id="search" type="search" placeholder="Search name, phone, email or message…">
+    <select id="courseFilter"><option value="">All courses</option></select>
+    <select id="statusFilter"><option value="">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option><option value="enrolled">Enrolled</option><option value="closed">Closed</option></select>
+  </div>
+  <div class="msg" id="dashMsg" role="status"></div>
+  <div class="tablewrap"><table><thead><tr><th>Received</th><th>Student</th><th>Contact</th><th>Course</th><th>Message</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table><div class="empty" id="empty" hidden>No enquiries yet.</div></div>
+</main>
+
+<script type="module">
+import { login, logout, getUser, handleAuthCallback, acceptInvite, updateUser, requestPasswordRecovery, AuthError } from "https://esm.sh/@netlify/identity@2.0.0";
+
+const $ = (id) => document.getElementById(id);
+const STATUSES = ["new", "contacted", "enrolled", "closed"];
+let all = [];
+let pendingInvite = null;
+
+function show(el, text, kind = "err") { el.textContent = text; el.className = `msg show ${kind}`; }
+function hide(el) { el.className = "msg"; }
+function esc(s) { return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]); }
+function errText(e) {
+  if (e instanceof AuthError && e.status === 401) return "Invalid email or password.";
+  return e?.message || "Something went wrong. Please try again.";
+}
+
+function showAuth(mode = "login") {
+  $("dashView").hidden = true; $("who").hidden = true; $("authView").hidden = false;
+  $("loginForm").hidden = mode !== "login"; $("passwordForm").hidden = mode === "login";
+}
+
+function showPasswordForm(title, hint) {
+  $("passwordTitle").textContent = title; $("passwordHint").textContent = hint; showAuth("password");
+}
+
+async function api(method, body, query = "") {
+  const res = await fetch(`/api/admin/enquiries${query}`, {
+    method, credentials: "same-origin",
+    headers: body ? { "Content-Type": "application/json" } : {},
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  if (res.status === 204) return null;
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) { const err = new Error(data.error || `Request failed (${res.status})`); err.status = res.status; throw err; }
+  return data;
+}
+
+async function loadDashboard() {
+  try {
+    const data = await api("GET");
+    all = data.enquiries;
+    $("whoEmail").textContent = data.user.email;
+    $("authView").hidden = true; $("dashView").hidden = false; $("who").hidden = false;
+    hide($("dashMsg"));
+    fillCourses(); render();
+  } catch (e) {
+    showAuth("login");
+    if (e.status === 403) show($("loginMsg"), "You are logged in, but this account does not have the admin role. Ask the site owner to add the “admin” role in Netlify Identity.");
+    else if (e.status !== 401) show($("loginMsg"), e.message);
+  }
+}
+
+function fillCourses() {
+  const sel = $("courseFilter"), current = sel.value;
+  const courses = [...new Set(all.map((r) => r.course))].sort();
+  sel.innerHTML = `<option value="">All courses</option>` + courses.map((c) => `<option>${esc(c)}</option>`).join("");
+  sel.value = courses.includes(current) ? current : "";
+}
+
+function filtered() {
+  const q = $("search").value.trim().toLowerCase(), course = $("courseFilter").value, status = $("statusFilter").value;
+  return all.filter((r) =>
+    (!course || r.course === course) && (!status || r.status === status) &&
+    (!q || [r.studentName, r.phone, r.email, r.message].some((v) => v?.toLowerCase().includes(q))));
+}
+
+function render() {
+  const week = Date.now() - 7 * 864e5;
+  $("sTotal").textContent = all.length;
+  $("sNew").textContent = all.filter((r) => r.status === "new").length;
+  $("sContacted").textContent = all.filter((r) => r.status === "contacted").length;
+  $("sEnrolled").textContent = all.filter((r) => r.status === "enrolled").length;
+  $("sWeek").textContent = all.filter((r) => new Date(r.createdAt).getTime() >= week).length;
+
+  const rows = filtered();
+  $("empty").hidden = rows.length > 0;
+  $("empty").textContent = all.length ? "No enquiries match your filters." : "No enquiries yet.";
+  $("rows").innerHTML = rows.map((r) => {
+    const d = new Date(r.createdAt);
+    return `<tr>
+      <td>${d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })}<div class="sub">${d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}</div></td>
+      <td><strong>${esc(r.studentName)}</strong></td>
+      <td><a href="tel:${esc(r.phone)}">${esc(r.phone)}</a><div class="sub"><a href="mailto:${esc(r.email)}">${esc(r.email)}</a></div></td>
+      <td><span class="pill">${esc(r.course)}</span></td>
+      <td class="msgcell">${esc(r.message) || '<span class="sub">—</span>'}</td>
+      <td><select class="status" data-id="${r.id}" data-v="${esc(r.status)}" aria-label="Status">${STATUSES.map((s) => `<option value="${s}"${s === r.status ? " selected" : ""}>${s[0].toUpperCase() + s.slice(1)}</option>`).join("")}</select></td>
+      <td><button class="del" data-id="${r.id}" title="Delete enquiry" aria-label="Delete enquiry">✕</button></td>
+    </tr>`;
+  }).join("");
+}
+
+$("rows").addEventListener("change", async (e) => {
+  if (!e.target.matches(".status")) return;
+  const id = Number(e.target.dataset.id), status = e.target.value;
+  try {
+    const updated = await api("PATCH", { id, status });
+    all = all.map((r) => (r.id === id ? updated : r)); render();
+  } catch (err) { show($("dashMsg"), err.message); render(); }
+});
+
+$("rows").addEventListener("click", async (e) => {
+  const btn = e.target.closest(".del"); if (!btn) return;
+  const id = Number(btn.dataset.id), row = all.find((r) => r.id === id);
+  if (!confirm(`Delete the enquiry from ${row?.studentName}? This cannot be undone.`)) return;
+  try { await api("DELETE", null, `?id=${id}`); all = all.filter((r) => r.id !== id); fillCourses(); render(); }
+  catch (err) { show($("dashMsg"), err.message); }
+});
+
+["search", "courseFilter", "statusFilter"].forEach((id) => $(id).addEventListener("input", render));
+$("refreshBtn").addEventListener("click", loadDashboard);
+
+$("exportBtn").addEventListener("click", () => {
+  const cols = [["Received", (r) => new Date(r.createdAt).toISOString()], ["Name", (r) => r.studentName], ["Phone", (r) => r.phone], ["Email", (r) => r.email], ["Course", (r) => r.course], ["Message", (r) => r.message], ["Status", (r) => r.status]];
+  const cell = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  const csv = [cols.map(([h]) => cell(h)).join(","), ...filtered().map((r) => cols.map(([, f]) => cell(f(r))).join(","))].join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["﻿" + csv], { type: "text/csv" }));
+  a.download = `nexora-enquiries-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click(); URL.revokeObjectURL(a.href);
+});
+
+$("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault(); hide($("loginMsg"));
+  const btn = e.submitter; btn.disabled = true;
+  try { await login($("loginEmail").value.trim(), $("loginPassword").value); await loadDashboard(); }
+  catch (err) { show($("loginMsg"), errText(err)); }
+  finally { btn.disabled = false; }
+});
+
+$("forgotBtn").addEventListener("click", async () => {
+  const email = $("loginEmail").value.trim();
+  if (!email) return show($("loginMsg"), "Enter your email above first, then click “Forgot password?”.");
+  try { await requestPasswordRecovery(email); show($("loginMsg"), "If that account exists, a password reset link has been emailed.", "ok"); }
+  catch (err) { show($("loginMsg"), errText(err)); }
+});
+
+$("passwordForm").addEventListener("submit", async (e) => {
+  e.preventDefault(); hide($("passwordMsg"));
+  const btn = e.submitter; btn.disabled = true;
+  try {
+    const pw = $("newPassword").value;
+    if (pendingInvite) { await acceptInvite(pendingInvite, pw); pendingInvite = null; }
+    else await updateUser({ password: pw });
+    history.replaceState(null, "", location.pathname);
+    await loadDashboard();
+  } catch (err) { show($("passwordMsg"), errText(err)); }
+  finally { btn.disabled = false; }
+});
+
+$("logoutBtn").addEventListener("click", async () => {
+  try { await logout(); } catch {}
+  all = []; $("rows").innerHTML = ""; showAuth("login");
+});
+
+(async function init() {
+  try {
+    const result = await handleAuthCallback();
+    if (result?.type === "invite") { pendingInvite = result.token; return showPasswordForm("Accept your invite", "Choose a password to finish setting up your admin account."); }
+    if (result?.type === "recovery") return showPasswordForm("Reset your password", "Enter a new password for your admin account.");
+    if (result) history.replaceState(null, "", location.pathname);
+  } catch (err) { showAuth("login"); return show($("loginMsg"), errText(err)); }
+  if (await getUser()) await loadDashboard(); else showAuth("login");
+})();
+</script>
+</body></html>

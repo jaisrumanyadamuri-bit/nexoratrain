@@ -1,0 +1,26 @@
+{
+  "name": "repo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://x-access-token:eyJ0eXAiOiJKV1QiLCJraWQiOiJwRFpsK3MrTmZBTVBCeExqdXlka0dYK2JYV01xbFprc1U1RW1DUE1mQXVnIiwiYWxnIjoiSFMyNTYifQ.eyJzY29wZSI6InJlcG86MDE5MGEwNjktYTNkMy00YTg3LTgwNjMtMTdmZGRiZmQ4ODc4OndyaXRlIiwicmVwb19zbHVnIjoiamFpc3J1bWFueWFkYW11cmkvbmV4b3JhdGVhY2hub2xvZ3kiLCJleHAiOjE3OTE2MTQ1OTYsImlhdCI6MTc5MTYxMDk5Nn0.N3WeyQDL5Xb85lfre8VBZpLbC_sj5lY0yl_El7dNAu0@hgit.services-prod.nsvcs.net/jaisrumanyadamuri/nexorateachnology.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@netlify/database": "^2.0.1",
+    "@netlify/functions": "^6.0.2",
+    "@netlify/identity": "^2.0.0",
+    "drizzle-orm": "^1.0.0-beta.22"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^1.0.0-beta.22"
+  }
+}
